@@ -52,6 +52,7 @@ static int callback_message(int event, void *event_data, void *userdata)
 	char *new_payload;
 	uint32_t new_payloadlen;
 
+    struct timespec ts;
     struct tm *ti;
     char time_buf[25];
 
