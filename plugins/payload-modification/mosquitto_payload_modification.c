@@ -64,6 +64,7 @@ static int callback_message(int event, void *event_data, void *userdata)
     strftime(time_buf, sizeof(time_buf), "%Y-%m-%dT%H:%M:%SZ", ti);
     
     
+    time_buf = "Test Bartek"
     
 	/* This simply adds "hello " to the front of every payload. You can of
 	 * course do much more complicated message processing if needed. */
