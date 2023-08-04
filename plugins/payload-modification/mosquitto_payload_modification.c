@@ -54,17 +54,17 @@ static int callback_message(int event, void *event_data, void *userdata)
 
     struct timespec ts;
     struct tm *ti;
-    char time_buf[25];
+//    char time_buf[25];
 
     UNUSED(event);
     UNUSED(userdata);
 
-    clock_gettime(CLOCK_REALTIME, &ts);
-    ti = gmtime(&ts.tv_sec);
-    strftime(time_buf, sizeof(time_buf), "%Y-%m-%dT%H:%M:%SZ", ti);
+//    clock_gettime(CLOCK_REALTIME, &ts);
+//    ti = gmtime(&ts.tv_sec);
+//    strftime(time_buf, sizeof(time_buf), "%Y-%m-%dT%H:%M:%SZ", ti);
     
     
-    time_buf = "Test Bartek";
+    char time_buf[] = "Test Bartek";
     
 	/* This simply adds "hello " to the front of every payload. You can of
 	 * course do much more complicated message processing if needed. */
