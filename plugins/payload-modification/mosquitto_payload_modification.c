@@ -32,8 +32,10 @@ Contributors:
  *
  * Note that this only works on Mosquitto 2.0 or later.
  */
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "mosquitto_broker.h"
 #include "mosquitto_plugin.h"
@@ -50,14 +52,23 @@ static int callback_message(int event, void *event_data, void *userdata)
 	char *new_payload;
 	uint32_t new_payloadlen;
 
-	UNUSED(event);
-	UNUSED(userdata);
+    struct tm *ti;
+    char time_buf[25];
 
+    UNUSED(event);
+    UNUSED(userdata);
+
+    clock_gettime(CLOCK_REALTIME, &ts);
+    ti = gmtime(&ts.tv_sec);
+    strftime(time_buf, sizeof(time_buf), "%Y-%m-%dT%H:%M:%SZ", ti);
+    
+    
+    
 	/* This simply adds "hello " to the front of every payload. You can of
 	 * course do much more complicated message processing if needed. */
 
 	/* Calculate the length of our new payload */
-	new_payloadlen = ed->payloadlen + (uint32_t)strlen("hello ")+1;
+	new_payloadlen = ed->payloadlen + (uint32_t)strlen(time_buf)+1;
 
 	/* Allocate some memory - use
 	 * mosquitto_calloc/mosquitto_malloc/mosquitto_strdup when allocating, to
@@ -68,8 +79,8 @@ static int callback_message(int event, void *event_data, void *userdata)
 	}
 
 	/* Print "hello " to the payload */
-	snprintf(new_payload, new_payloadlen, "hello ");
-	memcpy(new_payload+(uint32_t)strlen("hello "), ed->payload, ed->payloadlen);
+	snprintf(new_payload, new_payloadlen, time_buf);
+	memcpy(new_payload+(uint32_t)strlen(time_buf), ed->payload, ed->payloadlen);
 
 	/* Assign the new payload and payloadlen to the event data structure. You
 	 * must *not* free the original payload, it will be handled by the
